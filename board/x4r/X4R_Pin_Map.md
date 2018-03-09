@@ -13,7 +13,7 @@ www.rfmw.com/datasheets/skyworks/SE2431L_DS.pdf
 4 Pin Thru-Hole unpopulated header
 ```
 --------------------- 
-            G Tx Rx +|--- S 
+           G Tx Rx + |--- S 
 		     |--- +
 		     |--- G
 		     |--- G 
