@@ -10,17 +10,19 @@ www.ti.com/lit/ds/swrs040c/swrs040c.pdf
 RF Frontend SiGe2431L
 www.rfmw.com/datasheets/skyworks/SE2431L_DS.pdf
 
-4 Pin Thru-Hole unpopulated header  --------------------- 
-                                        	G Tx Rx +|--- S 
-							 |--- +
-							 |--- G
-							 |--- G 
-							 |--- +
-							 |--- S 
-				    ---------------------
-						     ||||
-						     A-+S
-
+4 Pin Thru-Hole unpopulated header
+```
+--------------------- 
+            G Tx Rx +|--- S 
+		     |--- +
+		     |--- G
+		     |--- G 
+		     |--- +
+		     |--- S 
+---------------------
+		||||
+	        A-+S
+```
 
 STM32F103
 ```
