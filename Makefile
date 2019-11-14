@@ -1,5 +1,5 @@
 #select target. supported: {VD5M, D4RII, USKY, TINYFISH, AFRX, RASP}
-TARGET ?= USKY
+TARGET ?= D4RII
 
 ASFLAGS       = -g
 ROOT         := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
@@ -9,7 +9,29 @@ INCLUDE_DIRS  = $(SRC_DIR)
 GENERIC_SRCS    = $(wildcard $(SRC_DIR)/*.c)
 GENERIC_HEADERS = $(GENERIC_SRCS:.c=.h)
 
+## V                 : Set verbosity level based on the V= parameter
+##                     V=0 Low
+##                     V=1 High
+include $(ROOT)/make/build_verbosity.mk
 
+# Build tools, so we all share the same versions
+# import macros common to all supported build systems
+include $(ROOT)/make/system-id.mk
+
+# developer preferences, edit these at will, they'll be gitignored
+-include $(ROOT)/make/local.mk
+
+# configure some directories that are relative to wherever ROOT_DIR is located
+ifndef TOOLS_DIR
+TOOLS_DIR := $(ROOT)/tools
+endif
+BUILD_DIR := $(ROOT)/build
+DL_DIR    := $(ROOT)/downloads
+
+export RM := rm
+
+# include the tools makefile
+include $(ROOT)/make/tools.mk
 
 #a special file can trigger the use of a fixed id (see storage.c)
 #i use this during development to avoid uneccessary re-binding for vd5m targets

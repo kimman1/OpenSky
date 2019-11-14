@@ -56,3 +56,5 @@ dump*
 .gitignore
 .project
 .cproject
+tools/
+downloads/

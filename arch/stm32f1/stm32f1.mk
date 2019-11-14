@@ -59,21 +59,13 @@ MAKEFLAGS  +="-j6 "
 #opt
 CFLAGS     += -O1 -g
 
-# Tool path, only override if not set
-TOOLROOT   ?= 
-
-ARM-PREFIX := arm-none-eabi-
-ifneq ($(TOOLROOT),)
-ARM-PREFIX := $(TOOLROOT)/$(ARM-PREFIX)
-endif
-
 # Tools
-CC       := $(ARM-PREFIX)gcc
-LD       := $(ARM-PREFIX)gcc
-AR       := $(ARM-PREFIX)ar
-AS       := $(ARM-PREFIX)as
-OBJ      := $(ARM-PREFIX)objcopy
-SIZE     := $(ARM-PREFIX)size
+CC       := $(ARM_SDK_PREFIX)gcc
+LD       := $(ARM_SDK_PREFIX)gcc
+AR       := $(ARM_SDK_PREFIX)ar
+AS       := $(ARM_SDK_PREFIX)as
+OBJ      := $(ARM_SDK_PREFIX)objcopy
+SIZE     := $(ARM_SDK_PREFIX)size
 
 INCLUDE_DIRS := $(INCLUDE_DIRS) \
                 $(TARGET_DIR) \
