@@ -24,10 +24,10 @@
 #include "main.h"
 #include "hal_cc25xx.h"
 
-#define FRSKY_HOPTABLE_SIZE 47
+#define FRSKY_HOPTABLE_SIZE 49
 
-// #define FRSKY_COUNT_RXSTATS 100
 #define FRSKY_COUNT_RXSTATS 50
+
 
 // extern EXTERNAL_MEMORY uint8_t frsky_txid[2];
 // extern EXTERNAL_MEMORY uint8_t frsky_hop_table[FRSKY_HOPTABLE_SIZE];
@@ -43,8 +43,11 @@ extern EXTERNAL_MEMORY uint8_t frsky_calib_fscal2;
 extern EXTERNAL_MEMORY uint8_t frsky_calib_fscal3;
 // extern EXTERNAL_MEMORY int16_t frsky_freq_offset_acc;
 
-#define FRSKY_PACKET_LENGTH 17
-#define FRSKY_PACKET_BUFFER_SIZE (FRSKY_PACKET_LENGTH+3)
+#define REDPINE_PACKET_SIZE 11
+#define REDPINE_PACKET_SIZE_W_ADDONS (REDPINE_PACKET_SIZE + 2)
+
+#define FRSKY_PACKET_LENGTH REDPINE_PACKET_SIZE
+#define FRSKY_PACKET_BUFFER_SIZE REDPINE_PACKET_SIZE_W_ADDONS
 extern EXTERNAL_MEMORY volatile uint8_t frsky_packet_buffer[FRSKY_PACKET_BUFFER_SIZE];
 extern EXTERNAL_MEMORY volatile uint8_t frsky_packet_received;
 extern EXTERNAL_MEMORY volatile uint8_t frsky_packet_sent;
@@ -95,12 +98,9 @@ void frsky_store_config(void);
 // TX:                 11 16 68 7A 1B 0B CA CB CF C4 88 85 CB CB CB 92 8B 78 21 AF
 // TELEMETRY WITH HUB: 11 16 68 60 64 5B 00 00 5E 3B 09 00 5E 5E 3B 09 00 5E 48 B1
 #define FRSKY_VALID_FRAMELENGTH(_b) (_b[0] == 0x11)
-#define FRSKY_VALID_CRC(_b)     (_b[19] & 0x80)
 #define FRSKY_VALID_TXID(_b) ((_b[1] == storage.frsky_txid[0]) && (_b[2] == storage.frsky_txid[1]))
-#define FRSKY_VALID_PACKET_BIND(_b) \
-    (FRSKY_VALID_FRAMELENGTH(_b) && FRSKY_VALID_CRC(_b) && (_b[2] == 0x01))
-#define FRSKY_VALID_PACKET(_b)      \
-    (FRSKY_VALID_FRAMELENGTH(_b) && FRSKY_VALID_CRC(_b) && FRSKY_VALID_TXID(_b) )
+#define FRSKY_VALID_PACKET_BIND(_b) ((_b[2] == 0x01))
+#define FRSKY_VALID_PACKET(_b)  ( FRSKY_VALID_TXID(_b) )
 
 /*
 #define FRSKY_HUB_TELEMETRY_HEADER 0x5E
