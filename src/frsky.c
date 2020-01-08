@@ -64,6 +64,8 @@ EXTERNAL_MEMORY volatile uint8_t frsky_packet_sent;
 
 #define DEFAULT_PACKET_TIME_US 50000
 #define SCALE_REDPINE(channelValue) ((2 * channelValue + 2452) / 3)
+#define SCALE_REDPINE_TO_SBUS(channelValue) ((321 * channelValue)/200 - 1418)
+#define SCALE_ALL(channelValue) (((107 * channelValue - 10618)/100))
 #define CHANNEL_START 3
 #define PWM_RANGE_MIN 1000
 #define PWM_RANGE_MAX 2000
@@ -731,8 +733,6 @@ void frsky_main(void) {
                 debug_putc('0' + cc25xx_get_current_antenna());
             } else {
                 debug_putc('!');
-                debug_put_int8(frsky_current_ch_idx);
-
                 missing++;
             }
             packet_received = 0;
@@ -743,7 +743,6 @@ void frsky_main(void) {
                 percent_ok = (((uint32_t)stat_rxcount) * 100) / FRSKY_COUNT_RXSTATS;
                 debug_put_uint8(percent_ok);
                 debug_putc('%');
-                debug_put_uint16(looptime);
                 debug_put_newline();
 
                 // for testing
@@ -886,25 +885,26 @@ void frsky_update_ppm(void) {
     */
     uint16_t channelValue;
 
+
+
     // extract channel data from packet:
     channelValue = (uint16_t)((packet[CHANNEL_START+1] << 8) & 0x700) | packet[CHANNEL_START];
-    channel_data[0] = SCALE_REDPINE(channelValue);
-    
+    channel_data[0] = SCALE_ALL(channelValue);
+
     channelValue = (uint16_t)((packet[CHANNEL_START+2] << 4) & 0x7F0) | ((packet[CHANNEL_START+1] >> 4) & 0xF);
-    channel_data[1] =  SCALE_REDPINE(channelValue);
+    channel_data[1] = SCALE_ALL(channelValue);
     
     channelValue = (uint16_t)((packet[CHANNEL_START+4] << 8) & 0x700) | packet[CHANNEL_START+3];
-    channel_data[2] =  SCALE_REDPINE(channelValue);
+    channel_data[2] = SCALE_ALL(channelValue);
     
     channelValue = (uint16_t)((packet[CHANNEL_START+5] << 4) & 0x7F0) | ((packet[CHANNEL_START+4] >> 4) & 0xF);
-    channel_data[3] =  SCALE_REDPINE(channelValue);
+    channel_data[3] = SCALE_ALL(channelValue);
 
     //12 1-bit aux channels - first 4 are interleaved with stick channels
-    channel_data[4]= (packet[CHANNEL_START + 1] & 0x08) ? PWM_RANGE_MAX : PWM_RANGE_MIN; 
-    channel_data[5]= (packet[CHANNEL_START + 2] & 0x80) ? PWM_RANGE_MAX : PWM_RANGE_MIN; 
-    channel_data[6]= (packet[CHANNEL_START + 4] & 0x08) ? PWM_RANGE_MAX : PWM_RANGE_MIN; 
-    channel_data[7]= (packet[CHANNEL_START + 5] & 0x80) ? PWM_RANGE_MAX : PWM_RANGE_MIN; 
-    channel_data[8]= (packet[CHANNEL_START + 6] & 0x01) ? PWM_RANGE_MAX : PWM_RANGE_MIN; 
+    channel_data[4]= (packet[CHANNEL_START + 1] & 0x08) ? 1792  : 192 ; 
+    channel_data[5]= (packet[CHANNEL_START + 2] & 0x80) ? 1792  : 192 ; 
+    channel_data[6]= (packet[CHANNEL_START + 4] & 0x08) ? 1792  : 192 ; 
+    channel_data[7]= (packet[CHANNEL_START + 5] & 0x80) ? 1792  : 192 ; 
 
 
     // exit failsafe mode

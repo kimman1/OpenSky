@@ -48,7 +48,7 @@ extern EXTERNAL_MEMORY uint8_t frsky_calib_fscal3;
 
 #define FRSKY_PACKET_LENGTH REDPINE_PACKET_SIZE
 #define FRSKY_PACKET_BUFFER_SIZE REDPINE_PACKET_SIZE_W_ADDONS
-extern EXTERNAL_MEMORY volatile uint8_t frsky_packet_buffer[FRSKY_PACKET_BUFFER_SIZE];
+extern EXTERNAL_MEMORY volatile uint8_t packet[FRSKY_PACKET_BUFFER_SIZE];
 extern EXTERNAL_MEMORY volatile uint8_t frsky_packet_received;
 extern EXTERNAL_MEMORY volatile uint8_t frsky_packet_sent;
 

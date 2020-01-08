@@ -94,16 +94,15 @@ void sbus_update(EXTERNAL_MEMORY uint16_t *data) {
     // 1023/960 = 1,065625.. = approx by 17/16 = 1 1/16
     // sbus data = (input-1290)*(1 1/16) = (input-1290) + (input-1290)/16
     for (i = 0; i < 8; i++) {
-        tmp = data[i] - 1290;
-        tmp = tmp + (tmp>>4);
-        tmp = tmp - 25;  // move center to 1500
+        tmp = data[i];
         if (tmp < 0) {
             rescaled_data[i] = 0;
         } else if (tmp > 2047) {
             rescaled_data[i] = 2047;
         } else {
-            rescaled_data[i] = tmp;
+            rescaled_data[i] = data[i];
         }
+
     }
 
     // rescale frsky rssi to 0..2047 (TODO: find correct conversion)

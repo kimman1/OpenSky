@@ -153,7 +153,7 @@ void hal_cc25xx_setup_rf_dma(uint8_t mode) {
         // Sets the maximum transfer count allowed (length byte + data)
         // Data source address is incremented by 1 byte
         // Destination address is constant
-        SET_WORD(hal_dma_config[0].SRCADDRH, hal_dma_config[0].SRCADDRL, frsky_packet_buffer);
+        SET_WORD(hal_dma_config[0].SRCADDRH, hal_dma_config[0].SRCADDRL, packet);
         SET_WORD(hal_dma_config[0].DESTADDRH, hal_dma_config[0].DESTADDRL, &X_RFD);
         hal_dma_config[0].VLEN           = DMA_VLEN_FIRST_BYTE_P_1;
         SET_WORD(hal_dma_config[0].LENH, hal_dma_config[0].LENL, (FRSKY_PACKET_LENGTH+1));
@@ -168,7 +168,7 @@ void hal_cc25xx_setup_rf_dma(uint8_t mode) {
         // Data source address is constant
         // Destination address is incremented by 1 byte for each write
         SET_WORD(hal_dma_config[0].SRCADDRH, hal_dma_config[0].SRCADDRL, &X_RFD);
-        SET_WORD(hal_dma_config[0].DESTADDRH, hal_dma_config[0].DESTADDRL, frsky_packet_buffer);
+        SET_WORD(hal_dma_config[0].DESTADDRH, hal_dma_config[0].DESTADDRL, packet);
         hal_dma_config[0].VLEN           = DMA_VLEN_FIRST_BYTE_P_3;
         SET_WORD(hal_dma_config[0].LENH, hal_dma_config[0].LENL, (FRSKY_PACKET_LENGTH+3));
         hal_dma_config[0].SRCINC         = DMA_SRCINC_0;
