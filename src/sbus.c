@@ -26,7 +26,11 @@
 #include "config.h"
 #include "sbus.h"
 #include "ppm.h"
+#ifdef REDPINE_PROTOCOL
+#include "redpine.h"
+#else
 #include "frsky.h"
+#endif
 #include "failsafe.h"
 #include "hal_sbus.h"
 
@@ -106,7 +110,7 @@ void sbus_update(EXTERNAL_MEMORY uint16_t *data) {
     }
 
     // rescale frsky rssi to 0..2047 (TODO: find correct conversion)
-    rssi_scaled = frsky_rssi*20;
+    rssi_scaled = rssi*20;
     rssi_scaled = min(2047, rssi_scaled);
 
     // sbus transmits up to 16 channels with 11bit each.

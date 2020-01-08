@@ -20,7 +20,12 @@
 #ifndef STORAGE_H_
 #define STORAGE_H_
 #include <stdint.h>
+#include "config.h"
+#ifdef REDPINE_PROTOCOL
+#include "redpine.h"
+#else
 #include "frsky.h"
+#endif
 
 #define STORAGE_VERSION_ID 0x01
 
@@ -28,15 +33,15 @@ void storage_init(void);
 void storage_write_to_flash(void);
 void storage_read_from_flash(void);
 
-
+#define MAX_HOPTABLE_SIZE 50
 // our storage struct contains all data that has to be stored on flash
 typedef struct {
     // version id
     uint8_t version;
     // persistent storage for frsky
-    uint8_t frsky_txid[2];
-    uint8_t frsky_hop_table[FRSKY_HOPTABLE_SIZE];
-    int8_t  frsky_freq_offset;
+    uint8_t txid[2];
+    uint8_t hop_table[MAX_HOPTABLE_SIZE];
+    int8_t  freq_offset;
     // add further data here...
 } STORAGE_DESC;
 

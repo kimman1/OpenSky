@@ -23,7 +23,11 @@
 #include "wdt.h"
 #include "delay.h"
 #include "led.h"
+#ifdef REDPINE_PROTOCOL
+#include "redpine.h"
+#else
 #include "frsky.h"
+#endif
 #include "hal_defines.h"
 
 
@@ -42,8 +46,8 @@ void storage_init(void) {
     storage_read_from_flash();
 
     debug("storage: loaded hoptable[] = ");
-    for (i = 0; i < FRSKY_HOPTABLE_SIZE; i++) {
-        debug_put_hex8(storage.frsky_hop_table[i]);
+    for (i = 0; i < MAX_HOPTABLE_SIZE; i++) {
+        debug_put_hex8(storage.hop_table[i]);
         debug_putc(' ');
         debug_flush();
     }
@@ -76,12 +80,12 @@ void storage_read_from_flash(void) {
         storage.version = STORAGE_VERSION_ID;
 
         // hard coded config for debugging:
-        storage.frsky_txid[0] = 0x16;
-        storage.frsky_txid[1] = 0x68;
-        storage.frsky_freq_offset = DEFAULT_FSCAL_VALUE;
+        storage.txid[0] = 0x16;
+        storage.txid[1] = 0x68;
+        storage.freq_offset = DEFAULT_FSCAL_VALUE;
 
-        for (i = 0; i < FRSKY_HOPTABLE_SIZE; i++) {
-            storage.frsky_hop_table[i] = storage_default_hoptable[i];
+        for (i = 0; i < MAX_HOPTABLE_SIZE; i++) {
+            storage.hop_table[i] = storage_default_hoptable[i];
         }
 
         // store settings

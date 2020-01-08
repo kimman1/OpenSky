@@ -25,7 +25,11 @@
 #include "timeout.h"
 #include "debug.h"
 #include "led.h"
+#ifdef REDPINE_PROTOCOL
+#include "redpine.h"
+#else
 #include "frsky.h"
+#endif
 #include <cc2510fx.h>
 
 EXTERNAL_MEMORY volatile uint8_t hal_cc25xx_mode;
@@ -179,7 +183,12 @@ void hal_cc25xx_setup_rf_dma(uint8_t mode) {
         SET_WORD(hal_dma_config[0].SRCADDRH, hal_dma_config[0].SRCADDRL, &X_RFD);
         SET_WORD(hal_dma_config[0].DESTADDRH, hal_dma_config[0].DESTADDRL, packet);
         hal_dma_config[0].VLEN           = DMA_VLEN_FIRST_BYTE_P_3;
+        #ifdef REDPINE_PROTOCOL
+        SET_WORD(hal_dma_config[0].LENH, hal_dma_config[0].LENL, (REDPINE_PACKET_BUFFER_SIZE));
+        #else
         SET_WORD(hal_dma_config[0].LENH, hal_dma_config[0].LENL, (FRSKY_PACKET_LENGTH+3));
+
+        #endif
         hal_dma_config[0].SRCINC         = DMA_SRCINC_0;
         hal_dma_config[0].DESTINC        = DMA_DESTINC_1;
     }
@@ -188,7 +197,6 @@ void hal_cc25xx_setup_rf_dma(uint8_t mode) {
     // configuration registers
     SET_WORD(DMA0CFGH, DMA0CFGL, &hal_dma_config[0]);
 
-    // frsky_packet_received = 0;
 }
 
 void hal_cc25xx_enable_receive(void) {
@@ -207,7 +215,11 @@ void hal_cc25xx_rf_interrupt(void) __interrupt RF_VECTOR {
 
     if (hal_cc25xx_mode == CC25XX_MODE_RX) {
         // mark as received:
+        #ifdef REDPINE_PROTOCOL        
+        redpine_packet_received = 1;
+        #else
         frsky_packet_received = 1;
+        #endif
         // re arm DMA channel 0
         hal_cc25xx_enable_receive();
     } else {

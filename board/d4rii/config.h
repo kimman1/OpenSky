@@ -26,6 +26,8 @@
 #define HUB_TELEMETRY_ON_SBUS_UART 
 #define HUB_TELEMETRY_INVERTED 
 
+#define REDPINE_PROTOCOL
+
 #ifdef SBUS_INVERTED
     // DEBUG is on SERVO4 output:
     #define DEBUG_USART               USART3

@@ -24,7 +24,11 @@
 #include "timeout.h"
 #include "delay.h"
 #include "wdt.h"
+#ifdef REDPINE_PROTOCOL
+#include "redpine.h"
+#else
 #include "frsky.h"
+#endif
 #include "adc.h"
 #include "storage.h"
 #include "sbus.h"
@@ -54,8 +58,12 @@ int main(void) {
     // init storage
     storage_init();
 
+#ifdef REDPINE_PROTOCOL
+    redpine_init();
+#else
     // init frsky core
     frsky_init();
+#endif
 
     // init adc
     adc_init();
@@ -76,9 +84,15 @@ int main(void) {
     // run main
     debug("main: init done\n");
 
+#ifdef REDPINE_PROTOCOL
+    redpine_main();
+#else
     // frsky_frame_sniffer();
     frsky_main();
+#endif
 
-    debug("main: frsky main ended?! THIS SHOULD NOT HAPPEN!");
+
+
+    debug("main: main ended?! THIS SHOULD NOT HAPPEN!");
     while (1) {}
 }
