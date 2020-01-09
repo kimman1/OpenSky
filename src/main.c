@@ -64,11 +64,9 @@ int main(void) {
     // init frsky core
     frsky_init();
 #endif
-
-#ifdef FEATURE_ADC
     // init adc
     adc_init();
-#endif 
+
     // init output
 #ifdef SBUS_ENABLED
     sbus_init();
@@ -91,8 +89,6 @@ int main(void) {
     // frsky_frame_sniffer();
     frsky_main();
 #endif
-
-
 
     debug("main: main ended?! THIS SHOULD NOT HAPPEN!");
     while (1) {}

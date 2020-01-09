@@ -3,8 +3,10 @@
 #include "main.h"
 
 #define FEATURE_REDPINE_PROTOCOL
-#define FEATURE_ADC
-#define FEATURE_SOFTSERIAL
+#define SBUS_FAST 
+//#define FEATURE_ADC
+//#define FEATURE_SOFTSERIAL
+//#define FEATURE_TELEMETRY
 
 #define LED_GPIO                  GPIOA
 #define LED_GPIO_CLK              RCC_APB2Periph_GPIOA

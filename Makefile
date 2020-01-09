@@ -36,7 +36,7 @@ include $(ROOT)/make/tools.mk
 #a special file can trigger the use of a fixed id (see storage.c)
 #i use this during development to avoid uneccessary re-binding for vd5m targets
 ifneq ($(wildcard .use_fixed_id),)
-CFLAGS       += -DFRSKY_USE_FIXED_ID
+CFLAGS       += -DFRSKY_USE_FIXED_ID 
 endif
 
 OBJECT_DIR      := $(ROOT)/obj

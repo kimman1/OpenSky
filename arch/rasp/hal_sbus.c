@@ -27,7 +27,7 @@
 #include "delay.h"
 #include "sbus.h"
 
-#if SBUS_ENABLED
+#ifdef SBUS_ENABLED
 
 static int uart0_filestream = -1;
 

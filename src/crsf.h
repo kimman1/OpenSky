@@ -17,16 +17,17 @@
    author: fishpepper <AT> gmail.com
 */
 
-#include "adc.h"
-#include "hal_adc.h"
-#include "debug.h"
+#ifndef CRSF_H_
+#define CRSF_H_
+#include <stdint.h>
 
-void adc_init(void) {
-    #ifdef FEATURE_ADC
-    debug("adc: init\n"); debug_flush();
-    hal_adc_init();
-    #else
-    debug("adc: Disabled - FEATURE_ADC not defined\n"); debug_flush();
-    #endif
-}
+#ifdef CRSF_ENABLED
 
+#define CRSF_DATA_LEN 25
+extern EXTERNAL_MEMORY uint8_t sbus_data[SBUS_DATA_LEN];
+
+#else
+
+#endif  // CRSF_ENABLED
+
+#endif  // CRSF_H_

@@ -112,7 +112,11 @@ static void hal_uart_init_mode(void) {
     // USART configuration:
     // 100000bps inverted serial stream, 8 bits, even parity, 2 stop bits
     // no hw flow control
+    #ifdef SBUS_FAST
+    uart_init.USART_BaudRate            = 200000;
+    #else
     uart_init.USART_BaudRate            = 100000;
+    #endif
     // THIS IS TRICKY! for parity bit we need to set uart to 9 bit mode !
     uart_init.USART_WordLength          = USART_WordLength_9b;
     uart_init.USART_StopBits            = USART_StopBits_2;
