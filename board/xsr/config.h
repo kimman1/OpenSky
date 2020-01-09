@@ -2,13 +2,16 @@
 #define __PIN_CONFIG_H__
 #include "main.h"
 
+#define FEATURE_REDPINE_PROTOCOL
+//#define FEATURE_ADC
+//#define FEATURE_SOFTSERIAL
+
 /* TODO find correct pins for LEDs */
 #define LED_GPIO                  GPIOA
 #define LED_GPIO_CLK              RCC_APB2Periph_GPIOA
 #define LED_GPIO_CLK_RCC          2
 #define LED_RED_PIN               GPIO_Pin_11
 #define LED_GREEN_PIN             GPIO_Pin_12
-
 
 // enable SBUS output -> this will DISABLE ppm!
 #define SBUS_ENABLED
@@ -26,15 +29,49 @@
 // #define HUB_TELEMETRY_INVERTED 
 // #define PPM_INVERTED
 
-#define SBUS_USART                 USART1
-#define SBUS_USART_CLK             RCC_APB2Periph_USART1
-#define SBUS_USART_RCC             2
-#define SBUS_USART_GPIO            GPIOA
-#define SBUS_USART_GPIO_CLK        RCC_APB2Periph_GPIOA
-#define SBUS_USART_GPIO_CLK_RCC    2
-#define SBUS_USART_TX_PIN          GPIO_Pin_9
-#define SBUS_USART_IRQHANDLER      USART1_IRQHandler
-#define SBUS_USART_IRQn            USART1_IRQn
+#ifdef SBUS_INVERTED
+    // DEBUG is on SERVO4 output:
+    #define DEBUG_USART               USART3
+    #define DEBUG_USART_CLK           RCC_APB1Periph_USART3
+    #define DEBUG_USART_CLK_RCC       1
+    #define DEBUG_USART_GPIO          GPIOB
+    #define DEBUG_USART_GPIO_CLK      RCC_APB2Periph_GPIOB
+    #define DEBUG_USART_GPIO_CLK_RCC  2
+    #define DEBUG_USART_TX_PIN        GPIO_Pin_10
+    #define DEBUG_USART_IRQHANDLER    USART3_IRQHandler
+    #define DEBUG_USART_IRQn          USART3_IRQn
+    // SBUS is INVERTED on 4 pin header TX pin
+    #define SBUS_USART                 USART1
+    #define SBUS_USART_CLK             RCC_APB2Periph_USART1
+    #define SBUS_USART_RCC             2
+    #define SBUS_USART_GPIO            GPIOA
+    #define SBUS_USART_GPIO_CLK        RCC_APB2Periph_GPIOA
+    #define SBUS_USART_GPIO_CLK_RCC    2
+    #define SBUS_USART_TX_PIN          GPIO_Pin_9
+    #define SBUS_USART_IRQHANDLER      USART1_IRQHandler
+    #define SBUS_USART_IRQn            USART1_IRQn
+#else
+    // DEBUG is INVERTED(!) on 4pin header TX pin
+    #define DEBUG_USART               USART1
+    #define DEBUG_USART_CLK           RCC_APB2Periph_USART1
+    #define DEBUG_USART_CLK_RCC       2
+    #define DEBUG_USART_GPIO          GPIOA
+    #define DEBUG_USART_GPIO_CLK      RCC_APB2Periph_GPIOA
+    #define DEBUG_USART_GPIO_CLK_RCC  2
+    #define DEBUG_USART_TX_PIN        GPIO_Pin_9
+    #define DEBUG_USART_IRQHANDLER    USART1_IRQHandler
+    #define DEBUG_USART_IRQn          USART1_IRQn
+    // SBUS is non-inverted on SERVO4 output:
+    #define SBUS_USART                 USART3
+    #define SBUS_USART_CLK             RCC_APB1Periph_USART3
+    #define SBUS_USART_RCC             1
+    #define SBUS_USART_GPIO            GPIOB
+    #define SBUS_USART_GPIO_CLK        RCC_APB2Periph_GPIOB
+    #define SBUS_USART_GPIO_CLK_RCC    2
+    #define SBUS_USART_TX_PIN          GPIO_Pin_10
+    #define SBUS_USART_IRQHANDLER      USART3_IRQHandler
+    #define SBUS_USART_IRQn            USART3_IRQn
+#endif
 
 #define CC25XX_SPI_GPIO             GPIOB
 #define CC25XX_SPI_SCK_PIN          GPIO_Pin_13
@@ -48,7 +85,7 @@
 #define CC25XX_SPI_GDO2_PIN         GPIO_Pin_11
 
 #define CC25XX_SPI                  SPI2
-#define CC25XX_SPI_CLK              RCC_APB2Periph_SPI2
+#define CC25XX_SPI_CLK              RCC_APB1Periph_SPI2
 #define CC25XX_SPI_CLK_RCC          2
 /* TODO ?? chose correct DMA for SPI2 */
 #define CC25XX_SPI_GPIO_CLK         RCC_APB2Periph_GPIOB
@@ -75,30 +112,27 @@
     CPS (PB3) is 0 then bypass mode is active, 1 is bypass off.
     CSD (PB4) with 1 to enable chip (0 = sleep)
 */ 
-
+#define CC25XX_NO_RX_PIN_SLECTION
 /* TODO revisit base on the above */
-#define CC25XX_ANT_SW_CTX_GPIO     GPIOC
-#define CC25XX_ANT_SW_CTX_GPIO_CLK RCC_APB2Periph_GPIOC
+#define CC25XX_ANT_SW_CTX_GPIO     GPIOA
+#define CC25XX_ANT_SW_CTX_GPIO_CLK RCC_APB2Periph_GPIOA
 #define CC25XX_ANT_SW_CTX_GPIO_CLK_RCC 2
 #define CC25XX_ANT_SW_CTX_PIN      GPIO_Pin_15
-
-
-#define CC25XX_ANT_SW_CRX_GPIO     GPIOC
-#define CC25XX_ANT_SW_CRX_GPIO_CLK RCC_APB2Periph_GPIOC
-#define CC25XX_ANT_SW_CRX_GPIO_CLK_RCC 2
-#define CC25XX_ANT_SW_CRX_PIN      GPIO_Pin_14
-
 
 #define CC25XX_LNA_SW_CTX_GPIO     GPIOA
 #define CC25XX_LNA_SW_CTX_GPIO_CLK RCC_APB2Periph_GPIOA
 #define CC25XX_LNA_SW_CTX_GPIO_CLK_RCC 2
 #define CC25XX_LNA_SW_CTX_PIN      GPIO_Pin_15
 
+#define CC25XX_LNA_BYPASS_GPIO     GPIOB
+#define CC25XX_LNA_BYPASS_GPIO_CLK RCC_APB2Periph_GPIOB
+#define CC25XX_LNA_BYPASS_GPIO_CLK_RCC 2
+#define CC25XX_LNA_BYPASS_PIN      GPIO_Pin_3
 
-#define CC25XX_LNA_SW_CRX_GPIO     GPIOB
-#define CC25XX_LNA_SW_CRX_GPIO_CLK RCC_APB2Periph_GPIOB
-#define CC25XX_LNA_SW_CRX_GPIO_CLK_RCC 2
-#define CC25XX_LNA_SW_CRX_PIN      GPIO_Pin_4
+#define CC25XX_LNA_ENABLE_GPIO     GPIOB
+#define CC25XX_LNA_ENABLE_GPIO_CLK RCC_APB2Periph_GPIOB
+#define CC25XX_LNA_ENABLE_GPIO_CLK_RCC 2
+#define CC25XX_LNA_ENABLE_PIN      GPIO_Pin_4
 
 /* GDO2 is on PA11 */
 #define CC25XX_GDO2_GPIO           GPIOA
