@@ -10,7 +10,6 @@ DRIVER_SRCS  := stm32f10x_rcc.c \
                 stm32f10x_spi.c \
                 stm32f10x_dma.c \
                 stm32f10x_adc.c \
-                stm32f10x_i2c.c \
                 stm32f10x_tim.c \
                 stm32f10x_flash.c
 
