@@ -20,6 +20,8 @@
 #ifndef TELEMETRY_H_
 #define TELEMETRY_H_
 
+#ifdef FEATURE_TELEMETRY
+
 #include "hal_defines.h"
 #include <stdint.h>
 
@@ -35,10 +37,8 @@ typedef struct {
 extern volatile EXTERNAL_MEMORY telemetry_buffer_t telemetry_buffer;
 extern volatile EXTERNAL_MEMORY uint8_t telemetry_expected_id;
 
+#endif
+
 void telemetry_init(void);
-void telemetry_rx_callback(uint8_t data);
-static void telemetry_rx_echo_test(void);
-void telemetry_fill_buffer(volatile EXTERNAL_MEMORY uint8_t *buffer, uint8_t telemetry_id);
-uint8_t telemetry_pop(volatile EXTERNAL_MEMORY uint8_t *byte);
 
 #endif  // TELEMETRY_H_

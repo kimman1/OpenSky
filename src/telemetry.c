@@ -23,6 +23,13 @@
 #include "debug.h"
 #include "wdt.h"
 
+#ifdef FEATURE_TELEMETRY
+
+static uint8_t telemetry_pop(volatile EXTERNAL_MEMORY uint8_t *byte);
+static void telemetry_rx_callback(uint8_t data);
+static void telemetry_rx_echo_test(void);
+static void telemetry_fill_buffer(volatile EXTERNAL_MEMORY uint8_t *buffer, uint8_t telemetry_id);
+
 volatile EXTERNAL_MEMORY telemetry_buffer_t telemetry_buffer;
 volatile EXTERNAL_MEMORY uint8_t telemetry_expected_id;
 
@@ -93,7 +100,7 @@ static void telemetry_rx_echo_test(void) {
 // * not all 10 bytes has to be filled in, only the number of bytes that were received
 //   will be sent in one frame
 //
-void telemetry_fill_buffer(volatile EXTERNAL_MEMORY uint8_t *buffer, uint8_t telemetry_id) {
+static void telemetry_fill_buffer(volatile EXTERNAL_MEMORY uint8_t *buffer, uint8_t telemetry_id) {
     uint8_t telemetry_bytecount = 0;
     uint8_t i;
 
@@ -125,7 +132,7 @@ void telemetry_fill_buffer(volatile EXTERNAL_MEMORY uint8_t *buffer, uint8_t tel
 
 
 // fetch byte from buffer, returns 0 on no data available, 1 on success
-uint8_t telemetry_pop(volatile EXTERNAL_MEMORY uint8_t *byte) {
+static uint8_t telemetry_pop(volatile EXTERNAL_MEMORY uint8_t *byte) {
     if (telemetry_buffer.read == telemetry_buffer.write) {
         // no data available
         return 0;
@@ -138,7 +145,7 @@ uint8_t telemetry_pop(volatile EXTERNAL_MEMORY uint8_t *byte) {
     return 1;
 }
 
-void telemetry_rx_callback(uint8_t data) {
+static void telemetry_rx_callback(uint8_t data) {
     uint8_t next;
 
     // push 1 byte into fifo:
@@ -153,3 +160,11 @@ void telemetry_rx_callback(uint8_t data) {
     telemetry_buffer.data[telemetry_buffer.write] = data;
     telemetry_buffer.write = next;
 }
+
+#else 
+
+void telemetry_init(void) {
+    debug("telemetry: disabled - FEATURE_TELEMETRY not defined \n"); debug_flush();
+}
+
+#endif //FEATURE_TELEMETRY
