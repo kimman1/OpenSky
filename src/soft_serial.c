@@ -23,9 +23,7 @@
 #include "main.h"
 #include "config.h"
 
-#define SOFTSERIAL_DEBUG_RX 0
-
-#ifndef HUB_TELEMETRY_ON_SBUS_UART
+#ifdef FEATURE_SOFTSERIAL
 
 volatile EXTERNAL_MEMORY uint16_t soft_serial_databits;
 volatile EXTERNAL_MEMORY uint16_t soft_serial_databit_count;
@@ -99,5 +97,8 @@ uint8_t soft_serial_process_databit(void) {
     // not yet finished
     return 0;
 }
+#else
+void soft_serial_init(void) {}
+void soft_serial_set_rx_callback(soft_serial_rx_callback_t cb) {};
 
-#endif  // HUB_TELEMETRY_ON_SBUS_UART
+#endif  // FEATURE_SOFTSERIAL

@@ -2,6 +2,10 @@
 #define __PIN_CONFIG_H__
 #include "main.h"
 
+#define FEATURE_REDPINE_PROTOCOL
+#define FEATURE_ADC
+#define FEATURE_SOFTSERIAL
+
 #define LED_GPIO                  GPIOA
 #define LED_GPIO_CLK              RCC_APB2Periph_GPIOA
 #define LED_GPIO_CLK_RCC          2
@@ -25,8 +29,6 @@
 // hub telemetry input (soft serial if only HUB_TELEMETRY_INVERTED, sbus uart if HUB_TELEMETRY_ON_SBUS_UART)
 #define HUB_TELEMETRY_ON_SBUS_UART 
 #define HUB_TELEMETRY_INVERTED 
-
-#define REDPINE_PROTOCOL
 
 #ifdef SBUS_INVERTED
     // DEBUG is on SERVO4 output:
@@ -132,7 +134,7 @@
 #define ADC_IN2_PIN               GPIO_Pin_2
 #define ADC_DMA_CHANNEL           DMA1_Channel1
 #define ADC_DMA_TC_FLAG           DMA1_FLAG_TC1
-//#define ADC                       ADC1
+#define ADC                       ADC1
 
 // ppm output
 #define PPM_GPIO                  GPIOB
@@ -147,7 +149,7 @@
 #define PPM_TIMER_IRQn            TIM3_IRQn
 
 
-#ifndef HUB_TELEMETRY_ON_SBUS_UART
+#ifdef FEATURE_SOFTSERIAL
 // hub telemetry input NOTE: this has to be a timer io
   #define SOFT_SERIAL_PIN_HAS_INVERTER  // there is an inverter on GPIOA.10!
   #define SOFT_SERIAL_GPIO          GPIOA

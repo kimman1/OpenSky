@@ -22,9 +22,8 @@
 #include "debug.h"
 
 void adc_init(void) {
-    #ifdef ADC
+    #ifdef FEATURE_ADC
     debug("adc: init\n"); debug_flush();
-
     hal_adc_init();
     #else
     debug("adc: Skip init - not defined\n"); debug_flush();

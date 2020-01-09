@@ -26,7 +26,7 @@
 #include "config.h"
 #include "sbus.h"
 #include "ppm.h"
-#ifdef REDPINE_PROTOCOL
+#ifdef FEATURE_REDPINE_PROTOCOL
 #include "redpine.h"
 #else
 #include "frsky.h"

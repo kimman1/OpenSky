@@ -23,7 +23,7 @@
 #include "wdt.h"
 #include "delay.h"
 #include "led.h"
-#ifdef REDPINE_PROTOCOL
+#ifdef FEATURE_REDPINE_PROTOCOL
 #include "redpine.h"
 #else
 #include "frsky.h"

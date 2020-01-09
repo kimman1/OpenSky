@@ -24,7 +24,7 @@
 #include "soft_serial.h"
 #include "stm32f10x_gpio.h"
 
-
+#ifdef FEATURE_SOFTSERIAL
 // at 9600 baud a bit duration is 1/9600s = 104.166667us
 // the counter counts in 1/24th of us -> 104.1667us * 24 =
 #define HAL_SOFTSERIAL_BIT_DURATION_TICKS  2500
@@ -69,5 +69,7 @@ TIM_ClearITPendingBit(SOFT_SERIAL_TIMER, SOFT_SERIAL_TIMER_IT_UP); }
 
 void SOFT_SERIAL_TIMER_IC_IRQHandler(void);
 void SOFT_SERIAL_TIMER_UP_IRQHandler(void);
+
+#endif // FEATURE_SOFTSERIAL
 
 #endif  // HAL_SOFT_SERIAL_H_

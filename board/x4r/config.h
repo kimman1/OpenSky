@@ -2,6 +2,10 @@
 #define __PIN_CONFIG_H__
 #include "main.h"
 
+#define FEATURE_REDPINE_PROTOCOL
+//#define FEATURE_ADC
+//#define FEATURE_SOFTSERIAL
+
 #define LED_GPIO                  GPIOB
 #define LED_GPIO_CLK              RCC_APB2Periph_GPIOB
 #define LED_GPIO_CLK_RCC          2

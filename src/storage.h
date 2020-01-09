@@ -21,7 +21,7 @@
 #define STORAGE_H_
 #include <stdint.h>
 #include "config.h"
-#ifdef REDPINE_PROTOCOL
+#ifdef FEATURE_REDPINE_PROTOCOL
 #include "redpine.h"
 #else
 #include "frsky.h"

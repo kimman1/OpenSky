@@ -17,18 +17,18 @@
    author: fishpepper <AT> gmail.com
 */
 
-#include "hal_soft_serial.h"
 #include "debug.h"
 #include "config.h"
 #include "led.h"
-#include "soft_serial.h"
 #include "stm32f10x.h"
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
 #include "misc.h"  // stm32 nvic
 
-#ifndef HUB_TELEMETRY_ON_SBUS_UART
+#ifdef FEATURE_SOFTSERIAL
+#include "soft_serial.h"
+#include "hal_soft_serial.h"
 
 void hal_soft_serial_init(void) {
     hal_soft_serial_init_gpio();
@@ -187,4 +187,4 @@ void SOFT_SERIAL_TIMER_UP_IRQHandler(void) {
     }
 }
 
-#endif  // if not HUB_TELEMETRY_ON_SBUS_UART
+#endif  // #ifdef FEATURE_SOFTSERIAL
