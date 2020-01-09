@@ -37,38 +37,44 @@ static void hal_cc25xx_init_gpio(void) {
     // antenna switch
     // periph clock enable for port
     RCC_APBxPeriphClockCmd(CC25XX_ANT_SW_CTX_GPIO_CLK_RCC, CC25XX_ANT_SW_CTX_GPIO_CLK, ENABLE);
-    RCC_APBxPeriphClockCmd(CC25XX_ANT_SW_CRX_GPIO_CLK_RCC, CC25XX_ANT_SW_CRX_GPIO_CLK, ENABLE);
-
-    // CTX:
     gpio_init.GPIO_Pin = CC25XX_ANT_SW_CTX_PIN;
     gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
     gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(CC25XX_ANT_SW_CTX_GPIO, &gpio_init);
+
+
     // CRX:
+    #ifndef CC25XX_NO_RX_PIN_SLECTION
+    RCC_APBxPeriphClockCmd(CC25XX_ANT_SW_CRX_GPIO_CLK_RCC, CC25XX_ANT_SW_CRX_GPIO_CLK, ENABLE);
     gpio_init.GPIO_Pin = CC25XX_ANT_SW_CRX_PIN;
     gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
     gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(CC25XX_ANT_SW_CRX_GPIO, &gpio_init);
-
+    #endif
+    
     // select first antenna
     hal_cc25xx_set_antenna(0);
 
     // PA/LNA:
-    // periph clock enable for port
-    RCC_APBxPeriphClockCmd(CC25XX_LNA_SW_CTX_GPIO_CLK_RCC, CC25XX_LNA_SW_CTX_GPIO_CLK, ENABLE);
-    RCC_APBxPeriphClockCmd(CC25XX_LNA_SW_CRX_GPIO_CLK_RCC, CC25XX_LNA_SW_CRX_GPIO_CLK, ENABLE);
-
 
     // CTX:
+    RCC_APBxPeriphClockCmd(CC25XX_LNA_SW_CTX_GPIO_CLK_RCC, CC25XX_LNA_SW_CTX_GPIO_CLK, ENABLE);
     gpio_init.GPIO_Pin = CC25XX_LNA_SW_CTX_PIN;
     gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
     gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(CC25XX_LNA_SW_CTX_GPIO, &gpio_init);
+
+
+
+    #ifndef CC25XX_NO_RX_PIN_SLECTION
     // CRX:
+    RCC_APBxPeriphClockCmd(CC25XX_LNA_SW_CRX_GPIO_CLK_RCC, CC25XX_LNA_SW_CRX_GPIO_CLK, ENABLE);
     gpio_init.GPIO_Pin = CC25XX_LNA_SW_CRX_PIN;
     gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
     gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(CC25XX_LNA_SW_CRX_GPIO, &gpio_init);
+    #endif
+
     hal_cc25xx_enter_rxmode();
 
     // JTAG IS ON LNA pins! -> DISABLE JTAG!
@@ -89,10 +95,14 @@ inline uint32_t hal_cc25xx_set_antenna(uint8_t id) {
     // select antenna 0 or 1:
     if (id) {
         CC25XX_ANT_SW_CTX_GPIO->BRR  = (CC25XX_ANT_SW_CTX_PIN);  // 0
+        #ifndef CC25XX_NO_RX_PIN_SLECTION //don't need to switch rx on some RXs
         CC25XX_ANT_SW_CRX_GPIO->BSRR = (CC25XX_ANT_SW_CRX_PIN);  // 1
+        #endif
     } else {
         CC25XX_ANT_SW_CTX_GPIO->BSRR = (CC25XX_ANT_SW_CTX_PIN);  // 1
-        CC25XX_ANT_SW_CRX_GPIO->BRR  = (CC25XX_ANT_SW_CRX_PIN);  // 0
+        #ifndef CC25XX_NO_RX_PIN_SLECTION
+            CC25XX_ANT_SW_CRX_GPIO->BRR  = (CC25XX_ANT_SW_CRX_PIN);  // 0
+        #endif        
     }
     return id;
 }
@@ -161,16 +171,20 @@ uint8_t hal_cc25xx_transmission_completed(void) {
 
 inline void hal_cc25xx_enter_rxmode(void) {
     // add pa/lna config bit setting here
+    #ifndef CC25XX_NO_RX_PIN_SLECTION
     CC25XX_LNA_SW_CRX_GPIO->BSRR = (CC25XX_LNA_SW_CRX_PIN);  // 1
     delay_us(20);
+    #endif
     CC25XX_LNA_SW_CTX_GPIO->BRR  = (CC25XX_LNA_SW_CTX_PIN);  // 0
     delay_us(5);
 }
 
 inline void hal_cc25xx_enter_txmode(void) {
     // add pa/lna config bit setting here
+    #ifndef CC25XX_NO_RX_PIN_SLECTION
     CC25XX_LNA_SW_CRX_GPIO->BRR  = (CC25XX_LNA_SW_CRX_PIN);  // 0
     delay_us(20);
+    #endif
     CC25XX_LNA_SW_CTX_GPIO->BSRR = (CC25XX_LNA_SW_CTX_PIN);  // 1
     delay_us(5);
 }
