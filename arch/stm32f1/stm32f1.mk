@@ -11,7 +11,8 @@ DRIVER_SRCS  := stm32f10x_rcc.c \
                 stm32f10x_dma.c \
                 stm32f10x_adc.c \
                 stm32f10x_i2c.c \
-                stm32f10x_tim.c
+                stm32f10x_tim.c \
+                stm32f10x_flash.c
 
 HAL_SRCS     := hal_led.c \
                 hal_uart.c \
@@ -27,7 +28,8 @@ HAL_SRCS     := hal_led.c \
                 hal_sbus.c \
                 hal_ppm.c \
                 hal_soft_serial.c \
-                hal_debug.c
+                hal_debug.c \
+                eeprom.c
 
 
 # Code Paths

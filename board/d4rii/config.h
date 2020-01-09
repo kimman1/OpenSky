@@ -123,19 +123,6 @@
 #define BIND_JUMPER_GPIO_CLK       RCC_APB2Periph_GPIOA
 #define BIND_JUMPER_GPIO_CLK_RCC   2
 
-#define EEPROM_GPIO                GPIOB
-#define EEPROM_GPIO_CLK            RCC_APB2Periph_GPIOB
-#define EEPROM_GPIO_CLK_RCC        2
-#define EEPROM_I2C                 I2C1
-#define EEPROM_I2C_CLK             RCC_APB1Periph_I2C1
-#define EEPROM_I2C_CLK_RCC         1
-#define EEPROM_I2C_SDA_PIN         GPIO_Pin_7
-#define EEPROM_I2C_SCL_PIN         GPIO_Pin_6
-#define EEPROM_WP_PIN              GPIO_Pin_8
-// A2=LO, A1=LO, A0=HI on pcb
-#define EEPROM_I2C_ADDRESS         0xA2
-
-
 #define ADC_GPIO                  GPIOA
 #define ADC_GPIO_CLK              RCC_APB2Periph_GPIOA
 #define ADC_GPIO_CLK_RCC          2
@@ -159,12 +146,6 @@
 #define PPM_TIMER_IRQHANDLER      TIM3_IRQHandler
 #define PPM_TIMER_IRQn            TIM3_IRQn
 
-// soft spi for apa102 led
-#define SOFT_SPI_GPIO             GPIOB
-#define SOFT_SPI_GPIO_CLK         RCC_APB2Periph_GPIOB
-#define SOFT_SPI_GPIO_CLK_RCC     2
-#define SOFT_SPI_MOSI             GPIO_Pin_1
-#define SOFT_SPI_SCK              GPIO_Pin_2
 
 #ifndef HUB_TELEMETRY_ON_SBUS_UART
 // hub telemetry input NOTE: this has to be a timer io
