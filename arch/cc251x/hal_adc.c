@@ -28,6 +28,7 @@
 #include "wdt.h"
 
 
+#ifdef ADC
 // adc results
 __xdata uint16_t hal_adc_data[2];
 
@@ -170,3 +171,5 @@ void hal_adc_test(void) {
     }
 }
 #endif  // ADC_DO_TEST
+
+#endif // ADC

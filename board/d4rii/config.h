@@ -132,7 +132,7 @@
 #define ADC_IN2_PIN               GPIO_Pin_2
 #define ADC_DMA_CHANNEL           DMA1_Channel1
 #define ADC_DMA_TC_FLAG           DMA1_FLAG_TC1
-#define ADC                       ADC1
+//#define ADC                       ADC1
 
 // ppm output
 #define PPM_GPIO                  GPIOB

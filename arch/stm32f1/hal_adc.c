@@ -26,6 +26,7 @@
 #include "stm32f10x_dma.h"
 #include "stm32f10x_adc.h"
 
+#ifdef ADC
 // adc results
 volatile uint16_t hal_adc_data[2];
 
@@ -183,3 +184,4 @@ uint8_t hal_adc_get_scaled(uint8_t ch) {
     }
 }
 
+#endif

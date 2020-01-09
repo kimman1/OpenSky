@@ -112,22 +112,6 @@
 #define BIND_JUMPER_GPIO_CLK       RCC_APB2Periph_GPIOC
 #define BIND_JUMPER_GPIO_CLK_RCC   2
 
-/* 
-    EEPROM is connected to PA0 (SCL) and PA1 (SDA) 
-
-    Note that this is **NOT** an I2C port on the F1 so must use SOFT I2C
-*/
-#define EEPROM_GPIO                GPIOA
-#define EEPROM_GPIO_CLK            RCC_APB2Periph_GPIOA
-#define EEPROM_GPIO_CLK_RCC        2
-#define EEPROM_I2C_SDA_PIN         GPIO_Pin_1
-#define EEPROM_I2C_SCL_PIN         GPIO_Pin_0
-/* TODO: ??? */
-#define EEPROM_WP_PIN              GPIO_Pin_8
-// A2=LO, A1=LO, A0=HI on pcb
-#define EEPROM_I2C_ADDRESS         0xA2
-
-/* NOTE no analogue input for XSR, and no servo pins */
 
 // cppm output is on PB12
 #define PPM_GPIO                  GPIOB

@@ -121,7 +121,6 @@
 #define BIND_JUMPER_GPIO_CLK       RCC_APB2Periph_GPIOA
 #define BIND_JUMPER_GPIO_CLK_RCC   2
 
-#
 #define ADC_GPIO                  GPIOA
 #define ADC_GPIO_CLK              RCC_APB2Periph_GPIOA
 #define ADC_GPIO_CLK_RCC          2
