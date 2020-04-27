@@ -1,7 +1,7 @@
 # OpenSky
 
 
-[![Build Status](https://travis-ci.org/fishpepper/OpenSky.svg?branch=master)](https://travis-ci.org/fishpepper/OpenSky)
+[![Build Status](https://travis-ci.com/kimman1/OpenSky.svg?branch=RedpineTest)](https://travis-ci.com/kimman1/OpenSky)
 
 This is an open source implementation for the pololar frsky protocol using
 a cc25xx transceiver chip. This software can be flashed on a DIY RX,
